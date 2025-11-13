@@ -1,32 +1,135 @@
-# **Tractable Dendritic RNNs for Reconstructing Nonlinear Dynamical Systems** [ICML 2022 Spotlight]
-![alt text for screen readers](images/dendrites.png "Augmenting RNN units with dendrites to increase computational power. Image credit goes to Manuel Brenner & Darshana Kalita.")
-## About
 
-This repository provides the code to the paper **Tractable Dendritic RNNs for Reconstructing Nonlinear Dynamical Systems** as accepted at the [ICML 2022](https://icml.cc/Conferences/2022). This work augments RNN units with elements from dendritic computation to increase their computational capabilites in turn allowing for low dimensional RNNs. We apply these models to the field of dynamical systems reconstruction, where low-dimensional representations of the underlying system are very much desired. 
 
-The repository is split into two codebases providing different approaches to the estimation of parameters of the dendritic, piecewise linear recurrent neural network (dendPLRNN). The folder `BPTT_TF` contains the codebase using backpropagation through time (BPTT) based training paired with sparse teacher forcing (TF), whereas `VI` embeds the dendPLRNN in a variational inference (VI) framework in the form of a sequential variational autoencoder (SVAE). All code is written in Python using [PyTorch](https://pytorch.org/) as the main deep learning framework.
+# 🚀 **Stabilizing Tractable Dendritic RNNs — Hybrid Regularization (MAR + TSD + ALN)**
 
-## Citation
-If you find the repository and/or paper helpful for your own research, please cite [our work](https://proceedings.mlr.press/v162/brenner22a.html):
-```
+*A clean and reproducible implementation of dendPLRNN with hybrid regularizers.*
 
-@InProceedings{pmlr-v162-brenner22a,
-  title = 	 {Tractable Dendritic {RNN}s for Reconstructing Nonlinear Dynamical Systems},
-  author =       {Brenner, Manuel and Hess, Florian and Mikhaeil, Jonas M and Bereska, Leonard F and Monfared, Zahra and Kuo, Po-Chen and Durstewitz, Daniel},
-  booktitle = 	 {Proceedings of the 39th International Conference on Machine Learning},
-  pages = 	 {2292--2320},
-  year = 	 {2022},
-  editor = 	 {Chaudhuri, Kamalika and Jegelka, Stefanie and Song, Le and Szepesvari, Csaba and Niu, Gang and Sabato, Sivan},
-  volume = 	 {162},
-  series = 	 {Proceedings of Machine Learning Research},
-  month = 	 {17--23 Jul},
-  publisher =    {PMLR},
-  pdf = 	 {https://proceedings.mlr.press/v162/brenner22a/brenner22a.pdf},
-  url = 	 {https://proceedings.mlr.press/v162/brenner22a.html},
-  abstract = 	 {In many scientific disciplines, we are interested in inferring the nonlinear dynamical system underlying a set of observed time series, a challenging task in the face of chaotic behavior and noise. Previous deep learning approaches toward this goal often suffered from a lack of interpretability and tractability. In particular, the high-dimensional latent spaces often required for a faithful embedding, even when the underlying dynamics lives on a lower-dimensional manifold, can hamper theoretical analysis. Motivated by the emerging principles of dendritic computation, we augment a dynamically interpretable and mathematically tractable piecewise-linear (PL) recurrent neural network (RNN) by a linear spline basis expansion. We show that this approach retains all the theoretically appealing properties of the simple PLRNN, yet boosts its capacity for approximating arbitrary nonlinear dynamical systems in comparatively low dimensions. We employ two frameworks for training the system, one combining BPTT with teacher forcing, and another based on fast and scalable variational inference. We show that the dendritically expanded PLRNN achieves better reconstructions with fewer parameters and dimensions on various dynamical systems benchmarks and compares favorably to other methods, while retaining a tractable and interpretable structure.}
-}
+This repository contains a forked and extended version of the ICML 2022 **dendPLRNN** framework, enhanced with **three new stability-oriented regularizers**:
+
+* **MAR** — Manifold-Attractor Regularization
+* **TSD** — Temporal Self-Distillation
+* **ALN** — Adaptive Latent Noise
+
+The implementation is modular, safe, and fully compatible with the original dendPLRNN architecture—requiring only a **single insertion point** in the BPTT training loop.
+
+This repo also includes fully runnable **ECG experiments**, **ablation scripts**, and **Jupyter notebooks** for training and visualization.
+
+---
+
+# 📦 **1. Repository Structure**
 
 ```
+dendPLRNN-Hybrid/
+│
+├── notebooks/
+│   ├── ECG_Training.ipynb     # Full training pipeline (Kaggle/Colab friendly)
+│
+├── requirements.txt
+├── README.md
+└── LICENSE
+```
 
-## Acknowledgements
-This work was funded by the German Research Foundation (DFG) within Germany’s Excellence Strategy – EXC-2181 – 390900948 (’Structures’), by DFG grant Du354/10-1 to DD, and the European Union Horizon-2020 consortium SC1-DTH-13-2020 ('IMMERSE').
+---
+
+# 🔧 **2. Requirements**
+
+Save the following as `requirements.txt`:
+
+```
+torch>=1.13
+numpy>=1.21
+scipy>=1.8
+scikit-learn>=1.0
+matplotlib>=3.5
+tqdm>=4.60
+pandas>=1.3
+jupyter
+seaborn
+```
+
+Optional but recommended:
+
+```
+pyyaml
+wandb
+einops
+```
+
+---
+
+# 🧪 **3. Installation**
+
+### **Clone the forked repository:**
+
+```bash
+git clone https://github.com/your-username/dendPLRNN-Hybrid.git
+cd dendPLRNN-Hybrid
+```
+
+### **Install dependencies:**
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# ☁️ **4. Running on Kaggle or Google Colab**
+
+Both Kaggle and Colab only need:
+
+```python
+!git clone https://github.com/your-username/dendPLRNN-Hybrid.git
+%cd dendPLRNN-Hybrid
+!pip install -r requirements.txt
+```
+
+Then open:
+
+```
+notebooks/ECG_Training.ipynb
+```
+
+All paths are relative and work automatically.
+
+---
+
+# 🧠 **5. How to Train Models (ECG Example)**
+
+Your notebook already contains the pipeline.
+
+
+
+# 🎯 **6. Key Features of This Repo**
+
+✔ Fully reproducible hybrid-regularized dendPLRNN implementation
+✔ Kaggle/Colab-ready notebooks
+✔ Modular code with defensive checks
+✔ Architecture-agnostic regularizers
+✔ Clean ablation framework
+✔ Capability to analyze:
+
+* Jacobians
+* Latent attractors
+* Long-horizon rollouts
+
+---
+
+# 🙏 **Acknowledgments**
+
+This work builds directly on:
+
+* Brenner et al., *ICML 2022 — dendPLRNN*
+* Durstewitz et al., *PLRNN theory*
+
+Official code included under open-source license.
+
+---
+
+# 📬 **Questions or Issues?**
+
+Feel free to open an issue or email:
+
+**[kheersagar@iitbhilai.ac.in](mailto:kheersagar@iitbhilai.ac.in)**
+
+
